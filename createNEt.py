@@ -91,7 +91,23 @@ def dmnet(pretrained_weights=None, input_size=(512, 512, 1)):
 
     inputDM = Input(input_size)
 
-    merge1 = Add()([conv10, inputDM])
+    z = Conv2D(16, (3, 3), activation='relu', padding='same')(inputDM)
+    # z = Flatten()(z)
+    # z = Dense(512*100*100,activation='relu')(z)
+    # z = Dense(4096, activation='relu')(z)
+    z = Dropout(0.5)(z)
+    # z = Dense(4096,activation='relu')(z)
+    # z = Dense(512*100*100, activation='relu')(z)
+    # z = Reshape((100,100,512))(z)
+    # z = Conv2D(128, (3, 3), activation='relu', padding='same')(z)
+    z = Conv2D(32, (3, 3), activation='relu', padding='same')(z)
+    z = Conv2D(64, (3, 3), activation='relu', padding='same')(z)
+    z = Conv2D(128, (3, 3), activation='relu', padding='same')(z)
+    # z = Conv2D(8, (3, 3), activation='relu', padding='same')(z)
+
+    pathDM = Conv2D(1, (3, 3), activation='sigmoid', padding='same')(z)
+
+    merge1 = Add()([conv10, pathDM])
 
     z = Conv2D(128, (3, 3), activation='relu', padding='same')(merge1)
     # z = Flatten()(z)
