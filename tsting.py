@@ -38,7 +38,7 @@ from createNEt import *
 
 # model = dmnet()
 
-model = load_model('dmnet_membraneBlk.hdf5')
+model = load_model('dmnet_membrane.hdf5')
 
 # X = np.load("imgTst.npy")
 # Y = np.load("dmTST.npy")
@@ -79,7 +79,7 @@ def testImages(files1, name1, name2):
         out_img = model.predict([X_arr, Y_arr])
 
         img = np.squeeze(out_img[0]) * 255.
-        misc.imsave(filePath + "resultsBlk/" + f1, img.astype('uint8'))
+        misc.imsave(filePath + "results/" + f1, img.astype('uint8'))
         # mask = mask * 255.
         # cv2.normalize(img.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
         # cv2.normalize(dm.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)

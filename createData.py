@@ -44,51 +44,51 @@ K.set_session(sess)
 
 
 
-def readImagesTwiceV(files1, name1, name2, name3):
-    L = len(files1)
-    X = []
-    Y = []
-    filePath = 'membrane/morseUpdate/'
-    for f1 in files1:
-        img = misc.imread(filePath + name1 + "/" + f1).astype('float32')
-        # print filePath + name2 + "/" + f1[:-8] + '_mask.tif', filePath + name1 + "/" + f1
-        mask = misc.imread(filePath + name2 + "/" + f1).astype('float32')
-        dm = misc.imread(filePath + name2 + "/" + f1).astype('float32')
-        cv2.normalize(img.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
-        cv2.normalize(dm.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
-        cv2.normalize(mask.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
-        case = np.random.randint(1, 4)
-        if case == 1:
-            val = np.random.randint(-1, 1)
-            img = cv2.flip(img, val)
-            dm = cv2.flip(dm, val)
-            mask = cv2.flip(mask, val)
-        if case == 2:
-            val = np.random.uniform(0.001, 0.2)
-            img = transform.warp(img, inverse_map=transform.AffineTransform(shear=val))
-            dm = transform.warp(dm, inverse_map=transform.AffineTransform(shear=val))
-            mask = transform.warp(mask, inverse_map=transform.AffineTransform(shear=val))
-        if case == 3:
-            val = np.random.randint(-15, 15)
-            img = ndimage.rotate(img, val, reshape=False)
-            dm = ndimage.rotate(dm, val, reshape=False)
-            mask = ndimage.rotate(mask, val, reshape=False)
-        if case == 4:
-            val = np.random.uniform(0.5, 2)
-            img = clipped_zoom(img, val)
-            dm = clipped_zoom(dm, val)
-            mask = clipped_zoom(mask, val)
-        # img = (img.astype(np.float32)-127.5)/127.5
-        X.append(img)
-        Y.append(dm)
-        Z.append(mask)
-    X_arr = np.asarray(X)
-    X_arr = X_arr[..., np.newaxis]
-    Y_arr = np.asarray(Y)
-    Y_arr = Y_arr[..., np.newaxis]
-    Z_arr = np.asarray(Z)
-    Z_arr = Z_arr[..., np.newaxis]
-    return X_arr, Y_arr, Z_arr
+# def readImagesTwiceV(files1, name1, name2, name3):
+#     L = len(files1)
+#     X = []
+#     Y = []
+#     filePath = 'membrane/morseUpdate/'
+#     for f1 in files1:
+#         img = misc.imread(filePath + name1 + "/" + f1).astype('float32')
+#         # print filePath + name2 + "/" + f1[:-8] + '_mask.tif', filePath + name1 + "/" + f1
+#         mask = misc.imread(filePath + name2 + "/" + f1).astype('float32')
+#         dm = misc.imread(filePath + name2 + "/" + f1).astype('float32')
+#         cv2.normalize(img.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
+#         cv2.normalize(dm.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
+#         cv2.normalize(mask.astype('float'), None, 0.0, 1.0, cv2.NORM_MINMAX)
+#         case = np.random.randint(1, 4)
+#         if case == 1:
+#             val = np.random.randint(-1, 1)
+#             img = cv2.flip(img, val)
+#             dm = cv2.flip(dm, val)
+#             mask = cv2.flip(mask, val)
+#         if case == 2:
+#             val = np.random.uniform(0.001, 0.2)
+#             img = transform.warp(img, inverse_map=transform.AffineTransform(shear=val))
+#             dm = transform.warp(dm, inverse_map=transform.AffineTransform(shear=val))
+#             mask = transform.warp(mask, inverse_map=transform.AffineTransform(shear=val))
+#         if case == 3:
+#             val = np.random.randint(-15, 15)
+#             img = ndimage.rotate(img, val, reshape=False)
+#             dm = ndimage.rotate(dm, val, reshape=False)
+#             mask = ndimage.rotate(mask, val, reshape=False)
+#         if case == 4:
+#             val = np.random.uniform(0.5, 2)
+#             img = clipped_zoom(img, val)
+#             dm = clipped_zoom(dm, val)
+#             mask = clipped_zoom(mask, val)
+#         # img = (img.astype(np.float32)-127.5)/127.5
+#         X.append(img)
+#         Y.append(dm)
+#         Z.append(mask)
+#     X_arr = np.asarray(X)
+#     X_arr = X_arr[..., np.newaxis]
+#     Y_arr = np.asarray(Y)
+#     Y_arr = Y_arr[..., np.newaxis]
+#     Z_arr = np.asarray(Z)
+#     Z_arr = Z_arr[..., np.newaxis]
+#     return X_arr, Y_arr, Z_arr
 
 
 def readImagesTwice(files1, name1, name2, name3):
@@ -206,7 +206,7 @@ def imageLoader(files1, batch_size):
         while batch_start < L:
             limit = min(batch_end, L)
             # print type(files1[batch_start:limit])
-            [X, Y, Z] = readImagesTwice(files1,'stp_data/train/img', 'stp_data/train/seg', 'stp_training_morse')
+            [X, Y, Z] = readImagesTwice(files1,'train_pred_albu', 'stp_data/train/seg', 'stp_training_morse')
             # Y = readImages(files2[batch_start:limit], '405_imgs')
 
             yield (X,Y, Z) #a tuple with two numpy arrays with batch_size samples
@@ -214,29 +214,29 @@ def imageLoader(files1, batch_size):
             batch_start += batch_size
             batch_end += batch_size
 
-def imageLoaderV(files1, batch_size):
+# def imageLoaderV(files1, batch_size):
+#
+#     L = len(files1)
+#
+#     #this line is just to make the generator infinite, keras needs that
+#     while True:
+#
+#         batch_start = 0
+#         batch_end = batch_size
+#
+#         while batch_start < L:
+#             limit = min(batch_end, L)
+#             # print type(files1[batch_start:limit])
+#             [X, Y, Z] = readImagesTwice(files1[batch_start:limit], 'stp_data/train/img', 'stp_data/train/seg', 'stp_training_morse')
+#             # Y = readImages(files2[batch_start:limit], '405_imgs')
+#
+#             yield (X,Y, Z) #a tuple with two numpy arrays with batch_size samples
+#
+#             batch_start += batch_size
+#             batch_end += batch_size
 
-    L = len(files1)
-
-    #this line is just to make the generator infinite, keras needs that
-    while True:
-
-        batch_start = 0
-        batch_end = batch_size
-
-        while batch_start < L:
-            limit = min(batch_end, L)
-            # print type(files1[batch_start:limit])
-            [X, Y, Z] = readImagesTwice(files1[batch_start:limit], 'stp_data/train/img', 'stp_data/train/seg', 'stp_training_morse')
-            # Y = readImages(files2[batch_start:limit], '405_imgs')
-
-            yield (X,Y, Z) #a tuple with two numpy arrays with batch_size samples
-
-            batch_start += batch_size
-            batch_end += batch_size
-
-[X, Y, Z] = readImagesTwice(fileList1,'stp_data/train/img', 'stp_data/train/seg', 'stp_training_morse')
-np.save('dm.npy', Y)
-np.save('imgTrn.npy', X)
+[X, Y, Z] = readImagesTwice(fileList1,'train_pred_albu', 'stp_data/train/seg', 'stp_training_morse')
+np.save('dm1.npy', Y)
+np.save('imgAlbuTrn.npy', X)
 np.save('segTrn.npy', Z)
 

@@ -1,11 +1,11 @@
 clear all;
 
 % colormap('jet');
-% folder = '../results2Img/';
-folder = '../newTest/test/seg/';
+% folder = '../DM++/membrane/morseUpdate/results/';
+folder = '../DM++/membrane/morseUpdate/stp_data/test/seg/';
 dirF = dir(fullfile(folder,'*.tif'));
 
-imgFolder = '../resultsLong/';
+imgFolder = '../DM++/membrane/morseUpdate/results/';
 
 FN_sum = 0;
 FP_sum = 0;

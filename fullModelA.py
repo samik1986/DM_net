@@ -30,7 +30,7 @@ import numpy as np
 from scipy.ndimage import zoom
 from keras.callbacks import TensorBoard
 from scipy import misc
-from createNEt import *
+from createNETa import *
 
 fileList1 = os.listdir('membrane/morseUpdate/stp_data/train/img/')
 fileList2 = os.listdir('membrane/morseUpdate/stp_data/train/seg/')
@@ -232,14 +232,14 @@ K.set_session(sess)
 # # myGene = trainGenerator(5,'membrane/train','image','label',data_gen_args,save_to_dir = None)
 # # validation = validateGenerator('membrane/validate/', num_image=1155)
 
-X = np.load("imgTrn.npy")
+X = np.load("imgAlbuTrn.npy")
 Y = np.load("dm1.npy")
 Z = np.load("segTrn.npy")
 
 model = dmnet()
 print model.summary()
 # model.load_weights('unet_membrane.hdf5')
-model_checkpoint = ModelCheckpoint('dmnet_membrane.hdf5', monitor='loss',verbose=1, save_best_only=True)
+model_checkpoint = ModelCheckpoint('dmnet_membraneA.hdf5', monitor='loss',verbose=1, save_best_only=True)
 tbCallBack = TensorBoard(log_dir='./Graph', histogram_freq=0, write_graph=True, write_images=True)
-model.fit([X, Y], Z, epochs=50, batch_size= 5, callbacks=[model_checkpoint,tbCallBack])# ,validation_data=imageLoaderV(fileList1, 2),validation_steps=578)
+model.fit([X, Y], Z, epochs=500, batch_size=5, callbacks=[model_checkpoint,tbCallBack])# ,validation_data=imageLoaderV(fileList1, 2),validation_steps=578)
 
