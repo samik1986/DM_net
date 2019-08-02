@@ -38,15 +38,17 @@ from createNEt import *
 
 # model = dmnet()
 
-model = load_model('dmnet_membrane.hdf5')
+model = load_model('dmnet_membraneA.hdf5')
 
 # X = np.load("imgTst.npy")
 # Y = np.load("dmTST.npy")
 
-fileList1 = os.listdir('membrane/morseUpdate/stp_data/test/img/')
+
+
+fileList1 = os.listdir('membrane/morseUpdate/albu_output/')
 fileList2 = os.listdir('membrane/morseUpdate/stp_data/test/seg/')
 fileList3 = os.listdir('membrane/morseUpdate/stp_test_morse/')
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 # config = tf.ConfigProto()
 # config.gpu_options.allow_growth=True
 # sess = tf.Session(config=config)
@@ -64,7 +66,7 @@ def testImages(files1, name1, name2):
         img = img.astype('float32')
         # print filePath + name2 + "/" + f1[:-8] + '_mask.tif', filePath + name1 + "/" + f1
         # mask = misc.imread(filePath + name2 + "/" + f1.replace("row", "label")).astype('float32')
-        dm = misc.imread(filePath + name2 + "/" + f1).astype('float32')
+        dm = misc.imread(filePath + name2 + "/" + f1.replace("img","row")).astype('float32')
         if img.max():
             img = img / img.max()
         dm = dm / 255.
@@ -100,4 +102,4 @@ def testImages(files1, name1, name2):
     # return X_arr, Y_arr
 
 
-testImages(fileList1,'stp_data/test/img', 'stp_test_morse')
+testImages(fileList1,'albu_output', 'stp_test_morse')
